@@ -4,10 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dumb_Dev. | Portfolio</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@900&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-color: #050505;
+            --bg-color: #030303;
             --primary-pink: #ff007a;
             --primary-green: #00ff88;
         }
@@ -17,41 +17,42 @@
             height: 100%; width: 100%;
             background-color: var(--bg-color);
             color: white; font-family: 'Inter', sans-serif;
-            overflow: hidden; /* Keeps it to one screen */
+            overflow: hidden;
         }
 
-        /* --- BACKGROUND MORPH --- */
+        /* --- THE GRID (NOW SUPER VISIBLE) --- */
         #bg-layer {
             position: fixed;
             top: 0; left: 0;
             width: 100%; height: 100%;
             z-index: -1;
-            transition: all 1s cubic-bezier(0.4, 0, 0.2, 1);
-            /* Initial Green Grid */
+            /* High visibility green grid */
             background-image: 
-                linear-gradient(rgba(0, 255, 136, 0.15) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0, 255, 136, 0.15) 1px, transparent 1px);
-            background-size: 50px 50px;
+                linear-gradient(rgba(0, 255, 136, 0.3) 2px, transparent 2px),
+                linear-gradient(90deg, rgba(0, 255, 136, 0.3) 2px, transparent 2px);
+            background-size: 60px 60px;
+            transition: all 0.3s ease-in-out; /* Faster BG transition */
         }
 
+        /* --- THE CIRCLES (WHEN FLIPPED) --- */
         body.is-flipped #bg-layer {
-            /* Morphs to Pink Circles */
-            background-image: radial-gradient(rgba(255, 0, 122, 0.3) 2px, transparent 0);
+            background-image: radial-gradient(var(--primary-pink) 3px, transparent 0);
             background-size: 40px 40px;
-            background-position: center;
+            filter: drop-shadow(0 0 5px var(--primary-pink));
         }
 
-        /* --- 3D SCENE --- */
+        /* --- FAST FLIP SCENE --- */
         .scene {
             width: 100vw; height: 100vh;
-            perspective: 1500px;
+            perspective: 2000px;
             display: flex; justify-content: center; align-items: center;
         }
 
         .card {
             width: 100%; height: 100%;
             position: relative;
-            transition: transform 0.8s cubic-bezier(0.6, -0.28, 0.735, 0.045);
+            /* CRANKED SPEED: 0.3s instead of 0.8s */
+            transition: transform 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             transform-style: preserve-3d;
         }
 
@@ -67,68 +68,38 @@
 
         .back { transform: rotateX(180deg); }
 
-        /* --- TEXT & CONTENT --- */
+        /* --- TEXT --- */
         h1 {
-            font-size: clamp(3rem, 12vw, 7rem);
-            font-weight: 900;
+            font-size: clamp(4rem, 15vw, 8rem);
             margin: 0;
-            background: linear-gradient(135deg, var(--primary-pink), var(--primary-green));
+            background: linear-gradient(to right, var(--primary-pink), var(--primary-green));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            filter: drop-shadow(0 0 15px rgba(0,255,136,0.2));
+            text-shadow: 0 0 30px rgba(0,255,136,0.2);
         }
 
-        .content {
-            text-align: center;
-            padding: 40px;
-            max-width: 700px;
-        }
+        .content { text-align: center; padding: 20px; }
 
-        /* --- ANIMATED YT SECTION --- */
-        .yt-container {
-            margin-top: 40px;
-            display: inline-block;
-            animation: bounce 2s infinite ease-in-out;
+        /* --- BOUNCY YT --- */
+        .yt-box {
+            margin-top: 50px;
+            animation: bounce 0.5s infinite alternate ease-in-out;
         }
 
         @keyframes bounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-15px); }
+            from { transform: scale(1); }
+            to { transform: scale(1.1); }
         }
 
-        .yt-link {
-            font-size: 1.8rem;
-            color: var(--primary-green);
-            text-decoration: none;
-            font-weight: 900;
-            display: block;
-        }
+        .yt-link { font-size: 2rem; color: var(--primary-green); text-decoration: none; font-weight: 900; }
 
         .sub-btn {
-            background: #ff0000;
-            color: white;
-            padding: 8px 20px;
-            border-radius: 50px;
-            text-decoration: none;
-            font-weight: bold;
-            display: inline-block;
-            margin-top: 10px;
-            font-size: 0.9rem;
-            transition: 0.3s;
-            box-shadow: 0 0 20px rgba(255, 0, 0, 0.4);
+            background: #ff0000; color: white; padding: 15px 30px;
+            border-radius: 10px; text-decoration: none; font-weight: bold;
+            display: block; margin-top: 15px; box-shadow: 0 0 30px red;
         }
 
-        .sub-btn:hover { transform: scale(1.1); background: #cc0000; }
-
-        #sparks {
-            position: fixed; top: 0; left: 0;
-            pointer-events: none; z-index: 10;
-        }
-
-        .hint {
-            position: absolute; bottom: 20px;
-            opacity: 0.5; font-size: 0.9rem;
-        }
+        #sparks { position: fixed; top: 0; left: 0; pointer-events: none; z-index: 99; }
     </style>
 </head>
 <body>
@@ -138,99 +109,78 @@
 
     <div class="scene">
         <div class="card" id="card">
-            
             <div class="section front">
                 <h1>Dumb_Dev.</h1>
-                <p style="font-size: 1.5rem; color: var(--primary-green);">About me</p>
-                <div class="hint">Scroll down to flip</div>
+                <p style="color: var(--primary-green); font-size: 2rem;">About me</p>
+                <p style="opacity: 0.5;">SCROLL DOWN FAST</p>
             </div>
-
             <div class="section back">
                 <div class="content">
                     <h1>About me</h1>
-                    <p style="font-size: 1.2rem; line-height: 1.6;">
-                        I have a bunch of hobbys, im good at being discord mod and i used to make roblox games and i am just active on discord.
-                    </p>
-                    <p style="font-size: 2rem;">I like pigs! 🐷</p>
-                    
-                    <div class="yt-container">
+                    <p style="font-size: 1.5rem;">Hobbys: Discord Mod, Roblox Dev, Discord Active 24/7</p>
+                    <p style="font-size: 2.5rem;">I like pigs! 🐷</p>
+                    <div class="yt-box">
                         <a href="https://www.youtube.com/@HugoPigStudios" class="yt-link" target="_blank">@HugoPigStudios</a>
-                        <a href="https://www.youtube.com/@HugoPigStudios?sub_confirmation=1" class="sub-btn" target="_blank">SUBSCRIBE</a>
+                        <a href="https://www.youtube.com/@HugoPigStudios" class="sub-btn" target="_blank">SUBSCRIBE & STUFF</a>
                     </div>
                 </div>
-                <div class="hint">Scroll up to return</div>
             </div>
-
         </div>
     </div>
 
     <script>
         const canvas = document.getElementById('sparks');
         const ctx = canvas.getContext('2d');
+        let isFlipped = false;
+        let particles = [];
+
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
 
-        let particles = [];
-        let isFlipped = false;
-
-        // Spark Particle Logic
-        class Particle {
+        class Spark {
             constructor() {
                 this.x = window.innerWidth / 2;
                 this.y = window.innerHeight / 2;
-                this.size = Math.random() * 6 + 2;
-                this.speedX = (Math.random() - 0.5) * 20;
-                this.speedY = (Math.random() - 0.5) * 20;
-                this.color = isFlipped ? '#00ff88' : '#ff007a';
+                this.speedX = (Math.random() - 0.5) * 30;
+                this.speedY = (Math.random() - 0.5) * 30;
+                this.size = Math.random() * 8;
+                this.color = isFlipped ? '#ff007a' : '#00ff88';
                 this.alpha = 1;
-            }
-            update() {
-                this.x += this.speedX;
-                this.y += this.speedY;
-                this.alpha -= 0.02;
             }
             draw() {
                 ctx.globalAlpha = this.alpha;
                 ctx.fillStyle = this.color;
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.fill();
+                ctx.fillRect(this.x, this.y, this.size, this.size);
+            }
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                this.alpha -= 0.05;
             }
         }
 
-        function triggerVFX() {
-            for (let i = 0; i < 50; i++) {
-                particles.push(new Particle());
-            }
+        function boom() {
+            for(let i=0; i<60; i++) particles.push(new Spark());
         }
 
         function animate() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.clearRect(0,0,canvas.width, canvas.height);
             particles.forEach((p, i) => {
-                p.update();
-                p.draw();
-                if (p.alpha <= 0) particles.splice(i, 1);
+                p.update(); p.draw();
+                if(p.alpha <= 0) particles.splice(i, 1);
             });
             requestAnimationFrame(animate);
         }
         animate();
 
-        // Scroll Logic
         window.addEventListener('wheel', (e) => {
             if (e.deltaY > 0 && !isFlipped) {
-                isFlipped = true;
+                isFlipped = true; boom();
                 document.body.classList.add('is-flipped');
-                triggerVFX();
             } else if (e.deltaY < 0 && isFlipped) {
-                isFlipped = false;
+                isFlipped = false; boom();
                 document.body.classList.remove('is-flipped');
-                triggerVFX();
             }
-        });
-
-        window.addEventListener('resize', () => {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
         });
     </script>
 </body>
