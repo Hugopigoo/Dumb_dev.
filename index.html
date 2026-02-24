@@ -3,176 +3,227 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dumb_Dev Portfolio</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <title>Dumb_Dev. | Portfolio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;900&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-color: #0a0a0a;
-            --gradient: linear-gradient(135deg, #ff007a, #00ff88);
+            --bg-color: #050505;
+            --primary-pink: #ff007a;
+            --primary-green: #00ff88;
+            --gradient: linear-gradient(135deg, var(--primary-pink), var(--primary-green));
         }
 
         body, html {
-            margin: 0;
-            padding: 0;
-            height: 100%;
-            font-family: 'Inter', sans-serif;
+            margin: 0; padding: 0;
+            height: 100%; width: 100%;
             background-color: var(--bg-color);
-            color: white;
-            overflow-x: hidden;
-            scroll-behavior: smooth;
+            color: white; font-family: 'Inter', sans-serif;
+            overflow: hidden;
         }
 
-        /* The "Grid" background effect from the image */
-        .background-grid {
+        /* --- DYNAMIC BACKGROUND --- */
+        #bg-grid {
             position: fixed;
             top: 0; left: 0;
             width: 100%; height: 100%;
-            background-image: 
-                linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
-            background-size: 50px 50px;
             z-index: -1;
+            transition: all 0.8s ease;
+            /* Default Grid (Green) */
+            background-image: 
+                linear-gradient(rgba(0, 255, 136, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 255, 136, 0.1) 1px, transparent 1px);
+            background-size: 40px 40px;
         }
 
-        /* Container for the flip effect */
+        /* When flipped, change grid to circles */
+        body.is-flipped #bg-grid {
+            background-image: radial-gradient(rgba(255, 0, 122, 0.2) 2px, transparent 0);
+            background-size: 30px 30px;
+        }
+
+        /* --- 3D SCENE --- */
         .scene {
-            height: 100vh;
-            perspective: 1000px;
+            width: 100vw; height: 100vh;
+            perspective: 1200px;
+            display: flex; justify-content: center; align-items: center;
         }
 
         .card {
-            width: 100%;
-            height: 100%;
+            width: 100%; height: 100%;
             position: relative;
-            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             transform-style: preserve-3d;
-        }
-
-        /* Trigger flip when a class is added via JS */
-        .card.is-flipped {
-            transform: rotateX(180deg);
-        }
-
-        .section {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            backface-visibility: hidden;
-        }
-
-        /* Front Side */
-        .front {
-            z-index: 2;
-        }
-
-        /* Back Side */
-        .back {
-            transform: rotateX(180deg);
-        }
-
-        h1 {
-            font-size: 5rem;
-            margin-bottom: 0;
-            background: var(--gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            font-weight: 700;
-        }
-
-        .subtext {
-            font-size: 1.5rem;
-            opacity: 0.7;
-            margin-top: 10px;
-        }
-
-        .content-box {
-            max-width: 600px;
-            text-align: center;
-            padding: 20px;
-        }
-
-        p {
-            font-size: 1.2rem;
-            line-height: 1.6;
-        }
-
-        a {
-            color: #00ff88;
-            text-decoration: none;
-            font-weight: bold;
-            border-bottom: 2px solid transparent;
-            transition: 0.3s;
-        }
-
-        a:hover {
-            border-bottom: 2px solid #ff007a;
-        }
-
-        .scroll-hint {
-            position: absolute;
-            bottom: 30px;
-            animation: bounce 2s infinite;
             cursor: pointer;
         }
 
-        @keyframes bounce {
-            0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
-            40% {transform: translateY(-10px);}
-            60% {transform: translateY(-5px);}
+        .is-flipped .card { transform: rotateY(180deg); }
+
+        .section {
+            position: absolute;
+            width: 100%; height: 100%;
+            display: flex; flex-direction: column;
+            justify-content: center; align-items: center;
+            backface-visibility: hidden;
+        }
+
+        .back { transform: rotateY(180deg); }
+
+        /* --- TEXT STYLES --- */
+        h1 {
+            font-size: clamp(3rem, 10vw, 6rem);
+            font-weight: 900;
+            margin: 0;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 0 10px rgba(0,255,136,0.3));
+        }
+
+        .subtext { font-size: 1.5rem; opacity: 0.6; margin-top: 10px; }
+
+        .content {
+            max-width: 600px;
+            text-align: center;
+            padding: 40px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* --- YT LINK ANIMATION --- */
+        .yt-box {
+            margin-top: 30px;
+            display: inline-block;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) scale(1); }
+            50% { transform: translateY(-10px) scale(1.05); }
+        }
+
+        .yt-link {
+            display: block;
+            color: var(--primary-pink);
+            font-weight: bold;
+            text-decoration: none;
+            font-size: 1.4rem;
+        }
+
+        .sub-text-btn {
+            font-size: 0.8rem;
+            color: white;
+            background: red;
+            padding: 4px 10px;
+            border-radius: 5px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 5px;
+            display: inline-block;
+        }
+
+        /* --- SPARKS CANVAS --- */
+        #sparks {
+            position: fixed;
+            top: 0; left: 0;
+            pointer-events: none;
+            z-index: 100;
         }
     </style>
 </head>
-<body>
+<body onclick="toggleFlip()">
 
-    <div class="background-grid"></div>
+    <canvas id="sparks"></canvas>
+    <div id="bg-grid"></div>
 
     <div class="scene">
         <div class="card" id="card">
             
             <div class="section front">
                 <h1>Dumb_Dev.</h1>
-                <p class="subtext">About me</p>
-                <div class="scroll-hint" onclick="flipCard()">▼ Scroll or Click to flip</div>
+                <p class="subtext">About me (Click to flip)</p>
             </div>
 
             <div class="section back">
-                <h1>About me</h1>
-                <div class="content-box">
-                    <p>I have a bunch of hobbies! I'm good at being a Discord mod and I used to make Roblox games. Mostly, I'm just active on Discord.</p>
-                    <p>Check out my YouTube channel:</p>
-                    <a href="https://www.youtube.com/@HugoPigStudios" target="_blank">@HugoPigStudios</a>
+                <div class="content">
+                    <h1>About me</h1>
+                    <p>I have a bunch of hobbies, I'm good at being a discord mod and I used to make roblox games and I am just active on discord.</p>
+                    <p style="font-size: 1.5rem;">I like pigs! 🐷</p>
+                    
+                    <div class="yt-box">
+                        <a href="https://www.youtube.com/@HugoPigStudios" class="yt-link" target="_blank">@HugoPigStudios</a>
+                        <span class="sub-text-btn">SUBSCRIBE NOW</span>
+                    </div>
                 </div>
-                <div class="scroll-hint" onclick="flipCard()" style="transform: rotate(180deg);">▲ Back</div>
             </div>
 
         </div>
     </div>
 
     <script>
-        const card = document.getElementById('card');
-        let flipped = false;
+        // Spark Effect Logic
+        const canvas = document.getElementById('sparks');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
 
-        // Flip on scroll
-        window.addEventListener('wheel', (e) => {
-            if (e.deltaY > 0 && !flipped) {
-                flipCard();
-            } else if (e.deltaY < 0 && flipped) {
-                flipCard();
+        let particles = [];
+
+        class Particle {
+            constructor(x, y) {
+                this.x = x; this.y = y;
+                this.size = Math.random() * 5 + 2;
+                this.speedX = (Math.random() - 0.5) * 15;
+                this.speedY = (Math.random() - 0.5) * 15;
+                this.color = Math.random() > 0.5 ? '#ff007a' : '#00ff88';
+                this.life = 1;
             }
-        });
-
-        function flipCard() {
-            flipped = !flipped;
-            if (flipped) {
-                card.classList.add('is-flipped');
-            } else {
-                card.classList.remove('is-flipped');
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                this.life -= 0.02;
+            }
+            draw() {
+                ctx.fillStyle = this.color;
+                ctx.globalAlpha = this.life;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
             }
         }
+
+        function createSparks() {
+            for (let i = 0; i < 40; i++) {
+                particles.push(new Particle(window.innerWidth / 2, window.innerHeight / 2));
+            }
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            for (let i = 0; i < particles.length; i++) {
+                particles[i].update();
+                particles[i].draw();
+                if (particles[i].life <= 0) {
+                    particles.splice(i, 1);
+                    i--;
+                }
+            }
+            requestAnimationFrame(animate);
+        }
+        animate();
+
+        // Flip Logic
+        function toggleFlip() {
+            document.body.classList.toggle('is-flipped');
+            createSparks();
+        }
+
+        // Handle window resize
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
     </script>
 </body>
 </html>
