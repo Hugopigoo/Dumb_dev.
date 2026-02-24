@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dumb_Dev Portfolio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #0a0a0a;
+            --gradient: linear-gradient(135deg, #ff007a, #00ff88);
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: white;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        /* The "Grid" background effect from the image */
+        .background-grid {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background-image: 
+                linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+            background-size: 50px 50px;
+            z-index: -1;
+        }
+
+        /* Container for the flip effect */
+        .scene {
+            height: 100vh;
+            perspective: 1000px;
+        }
+
+        .card {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-style: preserve-3d;
+        }
+
+        /* Trigger flip when a class is added via JS */
+        .card.is-flipped {
+            transform: rotateX(180deg);
+        }
+
+        .section {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            backface-visibility: hidden;
+        }
+
+        /* Front Side */
+        .front {
+            z-index: 2;
+        }
+
+        /* Back Side */
+        .back {
+            transform: rotateX(180deg);
+        }
+
+        h1 {
+            font-size: 5rem;
+            margin-bottom: 0;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 700;
+        }
+
+        .subtext {
+            font-size: 1.5rem;
+            opacity: 0.7;
+            margin-top: 10px;
+        }
+
+        .content-box {
+            max-width: 600px;
+            text-align: center;
+            padding: 20px;
+        }
+
+        p {
+            font-size: 1.2rem;
+            line-height: 1.6;
+        }
+
+        a {
+            color: #00ff88;
+            text-decoration: none;
+            font-weight: bold;
+            border-bottom: 2px solid transparent;
+            transition: 0.3s;
+        }
+
+        a:hover {
+            border-bottom: 2px solid #ff007a;
+        }
+
+        .scroll-hint {
+            position: absolute;
+            bottom: 30px;
+            animation: bounce 2s infinite;
+            cursor: pointer;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
+            40% {transform: translateY(-10px);}
+            60% {transform: translateY(-5px);}
+        }
+    </style>
+</head>
+<body>
+
+    <div class="background-grid"></div>
+
+    <div class="scene">
+        <div class="card" id="card">
+            
+            <div class="section front">
+                <h1>Dumb_Dev.</h1>
+                <p class="subtext">About me</p>
+                <div class="scroll-hint" onclick="flipCard()">▼ Scroll or Click to flip</div>
+            </div>
+
+            <div class="section back">
+                <h1>About me</h1>
+                <div class="content-box">
+                    <p>I have a bunch of hobbies! I'm good at being a Discord mod and I used to make Roblox games. Mostly, I'm just active on Discord.</p>
+                    <p>Check out my YouTube channel:</p>
+                    <a href="https://www.youtube.com/@HugoPigStudios" target="_blank">@HugoPigStudios</a>
+                </div>
+                <div class="scroll-hint" onclick="flipCard()" style="transform: rotate(180deg);">▲ Back</div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        const card = document.getElementById('card');
+        let flipped = false;
+
+        // Flip on scroll
+        window.addEventListener('wheel', (e) => {
+            if (e.deltaY > 0 && !flipped) {
+                flipCard();
+            } else if (e.deltaY < 0 && flipped) {
+                flipCard();
+            }
+        });
+
+        function flipCard() {
+            flipped = !flipped;
+            if (flipped) {
+                card.classList.add('is-flipped');
+            } else {
+                card.classList.remove('is-flipped');
+            }
+        }
+    </script>
+</body>
+</html>
